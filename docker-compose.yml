@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+  node:
+    build: .
+    container_name: node
+    command: npm run dev
+    restart: unless-stopped
+    volumes:
+      - ./:/usr/src
+      - ./node_modules:/usr/src/node_modules
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: ${P_USER}
+      POSTGRES_PASSWORD: ${P_PASSWORD}
+      POSTGRES_DB: ${DB}
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
